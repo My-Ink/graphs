@@ -163,7 +163,7 @@ AdjListsGraph generate_moves_graph(int length, int width, const std::vector<bool
 
         // from bottom to top
         nearest_wall_pos = length;
-        for (int i = length - 1; i >= 0; --i) { // bug
+        for (int i = length - 1; i >= 0; --i) {
             pos = i * width + j;
             if (map[pos])
                 nearest_wall_pos = i;
