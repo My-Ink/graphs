@@ -1,7 +1,5 @@
 #include <iostream>
 
-#include "graph.h"
-
 using std::cout;
 using std::cin;
 
