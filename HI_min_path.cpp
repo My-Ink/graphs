@@ -6,7 +6,7 @@
 
 namespace graph
 {
-using vertex_t = int32_t;
+using vertex_t = int64_t;
 using weight_t = int32_t;
 using wlist_t = std::unordered_map<vertex_t, weight_t>;
 
@@ -52,30 +52,26 @@ class WeightedAdjListsGraph : public WeightedGraph
 namespace impl
 {
 
-// Dijkstra's Algorithm
-decltype(auto) find_shortest_distances_from_vertex_(const WeightedGraph& graph, vertex_t vertex) {
-    std::priority_queue<std::pair<weight_t, vertex_t>> q;
-    std::vector<weight_t> dist(graph.size(), INT32_MAX);
-    std::vector<bool> proc(graph.size(), false);
+decltype(auto) find_shortest_distances_from_vertex_(const WeightedGraph& g, vertex_t s) {
+    std::vector<weight_t> dist(g.size(), -1);
+    std::vector<vertex_t> prev(g.size(), -1);
 
-    dist[vertex] = 0;
-    q.emplace(0, vertex);
+    std::queue<vertex_t> q;
+    q.push(s);
+    dist[s] = 0;
+
     while (!q.empty()) {
-        auto v = q.top().second;
-        q.pop();
-        if (proc[v])
-            continue;
-        proc[v] = true;
-
-        for (auto vw_pair: graph.get_neighbors(v)) {
+        auto v = q.front();
+        for (auto vw_pair : g.get_neighbors(v)) {
             auto[u, w] = vw_pair;
-            if (dist[v] + w < dist[u]) {
+            if (dist[u] == -1 || dist[u] > dist[v] + w) {
                 dist[u] = dist[v] + w;
-                q.emplace(-dist[u], u);
+                prev[u] = v;
+                q.push(u);
             }
         }
+        q.pop();
     }
-
     return dist;
 }
 
