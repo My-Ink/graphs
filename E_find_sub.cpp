@@ -102,9 +102,9 @@ class ManhattanGraph : public AdjListsGraph
                 vertex_t right_neighbor = encode_pair(i, j + 1, m);
                 vertex_t bottom_neighbor = encode_pair(i + 1, j, m);
                 if (j < m - 1)
-                    dynamic_cast<AdjListsGraph*>(this)->add_edge(v, right_neighbor);
+                    add_edge(v, right_neighbor);
                 if (i < n - 1)
-                    dynamic_cast<AdjListsGraph*>(this)->add_edge(v, bottom_neighbor);
+                    add_edge(v, bottom_neighbor);
                 if (has_sub[v]) {
                     distances_[v] = 0;
                     subs.push_back(v);
