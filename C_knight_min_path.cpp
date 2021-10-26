@@ -160,12 +160,17 @@ class Grid
     int n_rows_;
 };
 
+struct move_2d_t {
+    int x;
+    int y;
+};
+
 AdjListsGraph generate_knight_moves_graph(const Grid<vertex_t>& grid) {
     AdjListsGraph moves_graph(grid.n_cells(), false);
     const auto& encoder = grid.get_encoder();
     auto [n_rows, n_cols] = grid.shape();
 
-    std::pair<int, int> knight_moves[8] = {
+    move_2d_t knight_moves[8] = {
         {1,  -2},
         {1,  2},
         {-1, -2},
@@ -180,7 +185,7 @@ AdjListsGraph generate_knight_moves_graph(const Grid<vertex_t>& grid) {
         for (int y = 0; y < n_rows; ++y) {
             int code = encoder.encode(x, y);
             for (auto m: knight_moves) {
-                auto[new_x, new_y] = std::make_pair(x + m.first, y + m.second);
+                auto[new_x, new_y] = std::make_pair(x + m.x, y + m.y);
                 if (grid.contains_cell(new_x, new_y)) {
                     moves_graph.add_edge(code, encoder.encode(new_x, new_y));
                 }
